@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cálculo Substituição Tributária</title>
+</head>
+<body>
+  <h1>Cálculo Substituição Tributária</h1>
+
+  <label for="valorProduto">Valor do Produto:</label>
+  <input type="number" id="valorProduto" step="0.01" required><br>
+
+  <label for="frete">Frete:</label>
+  <input type="number" id="frete" step="0.01"><br>
+
+  <label for="seguro">Seguro:</label>
+  <input type="number" id="seguro" step="0.01"><br>
+
+  <label for="despesasAcessorias">Despesas Acessórias:</label>
+  <input type="number" id="despesasAcessorias" step="0.01"><br>
+
+  <label for="descontos">Descontos:</label>
+  <input type="number" id="descontos" step="0.01"><br>
+
+  <label for="aliquotaInter">Alíquota ICMS Inter:</label>
+  <input type="number" id="aliquotaInter" step="0.01" required><br>
+
+  <label for="aliquotaIntra">Alíquota ICMS Intra:</label>
+  <input type="number" id="aliquotaIntra" step="0.01" required><br>
+
+  <label for="mva">MVA:</label>
+  <input type="number" id="mva" step="0.01" required><br>
+
+  <label for="aliquotaIPI">Alíquota IPI:</label>
+  <input type="number" id="aliquotaIPI" step="0.01" required><br>
+
+  <button onclick="calcularSubstituicaoTributaria()">Calcular</button>
+
+  <h2>Resultado:</h2>
+  <p id="resultado"></p>
+
+  <script>
+    function calcularSubstituicaoTributaria() {
+      var valorProduto = parseFloat(document.getElementById('valorProduto').value);
+      var frete = parseFloat(document.getElementById('frete').value);
+      var seguro = parseFloat(document.getElementById('seguro').value);
+      var despesasAcessorias = parseFloat(document.getElementById('despesasAcessorias').value);
+      var descontos = parseFloat(document.getElementById('descontos').value);
+      var aliquotaInter = parseFloat(document.getElementById('aliquotaInter').value);
+      var aliquotaIntra = parseFloat(document.getElementById('aliquotaIntra').value);
+      var mva = parseFloat(document.getElementById('mva').value);
+      var aliquotaIPI = parseFloat(document.getElementById('aliquotaIPI').value);
+
+      var baseICMSInter = (valorProduto + frete + seguro + despesasAcessorias) - descontos;
+      var valorICMSInter = baseICMSInter * (aliquotaInter / 100);
+
+      var valorIPI = valorProduto * (aliquotaIPI / 100);
+
+      var baseICMSST = (valorProduto + valorIPI + frete + seguro + despesasAcessorias - descontos) * (1 + (mva / 100));
+      var valorICMSST = (baseICMSST * (aliquotaIntra / 100)) - valorICMSInter;
+
+      document.getElementById('resultado').innerHTML = "Valor ICMS-ST: R$" + valorICMSST.toFixed(2);
+    }
+  </script>
+</body>
+</html>
